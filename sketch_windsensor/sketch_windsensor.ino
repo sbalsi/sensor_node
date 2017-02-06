@@ -46,6 +46,7 @@ void loop() {
     if (millis() - lastMillis > 1000){      // In  ms 
     
     TMP_Therm_ADunits = analogRead(analogPinForTMP);
+    TMP_Therm_Volts = TMP_Therm_ADunits * 0.0048828125;   
     RV_Wind_ADunits = analogRead(analogPinForRV);
     RV_Wind_Volts = (RV_Wind_ADunits *  0.0048828125);
 
@@ -75,9 +76,22 @@ void loop() {
    //Serial.print("\t");
    //Serial.print(zeroWind_volts);
    //Serial.print("\t");
-   Serial.println((float)WindSpeed_MPH);
+   //Serial.println((float)WindSpeed_MPH);
    //Serial.print("\t");*/
-   
+
+   //Serial.println(TMP_Therm_Volts+","+TempCtimes100+","+(float)RV_Wind_Volts+","+zeroWind_volts+","+(float)WindSpeed_MPH);   
+
+   Serial.print(TMP_Therm_Volts);
+   Serial.print(",");
+   Serial.print(TempCtimes100);
+   Serial.print(",");
+   Serial.print((float)RV_Wind_Volts);
+   Serial.print(",");
+   Serial.print(zeroWind_volts);
+   Serial.print(",");
+   Serial.print((float)WindSpeed_MPH);
+   Serial.print("\n");
+
    lastMillis = millis();
 
       

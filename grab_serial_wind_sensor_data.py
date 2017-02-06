@@ -11,4 +11,6 @@ while True:
 	    print(data)
 
 	except IOError:
-	    print("Error") 
+	    print("Error")
+
+arduino.close() 
