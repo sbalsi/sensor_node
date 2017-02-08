@@ -29,10 +29,23 @@ sensor_node_log = open("sensor_node.log", "a+")
 arduino = serial.Serial("/dev/ttyACM0")
 arduino.baudrate=57600
 
-print("Start data gathering")
+#Preheat sensor
+print("Preheat Sensor")
+i = 10
+while (i >0):
+	print(i)
+	arduino.readline()
+	time.sleep(1)
+	i = i-1
 
+		
+print("Start data gathering")
 while True:
 	try:
+
+	    #Data output
+	    sensor_node_data = open("sensor_node_data.txt","a+")
+            sensor_node_log = open("sensor_node.log", "a+")
 
 	    #Clear buffer
 	    tmp_volts_buffer = []
@@ -42,6 +55,9 @@ while True:
  	    windSpeed_MPH_buffer = []
 	    time_buffer = []
 	    data_buffer_count = 0
+	    
+
+
 	    print("######################################################")
 	    sensor_node_log.write("######################################################\n")	
 	    while (data_buffer_count <2):
@@ -77,8 +93,8 @@ while True:
 		print("tmp thermistor value in volts of measurement n "+str(time_buffer[0])+" "+str(temp_tmp_volts_buffer[0]))
 		print("tmp thermistor value in volts of measurement n+1 "+str(time_buffer[1])+" "+str(temp_tmp_volts_buffer[1]))
 	 
-		sensor_node_data.write(str(time_buffer[0])+", "+str(temp_tmp_volts_buffer[0])+"\n")
-		sensor_node_data.write(str(time_buffer[1])+", "+str(temp_tmp_volts_buffer[1])+"\n")
+		sensor_node_data.write(str(time_buffer[0])+", "+str(temp_tmp_volts_buffer[0])+", "+str(temp_rv_volts_buffer[0])+"\n")
+		sensor_node_data.write(str(time_buffer[1])+", "+str(temp_tmp_volts_buffer[1])+", "+str(temp_rv_volts_buffer[1])+"\n")
 	
 		sensor_node_log.write("Fluctuation of tmp thermistor OK: "+ str(abs(100/float(temp_tmp_volts_buffer[0])*float(temp_tmp_volts_buffer[1])-100))+"%\n") 
 		sensor_node_log.write("tmp thermistor value in volts of measurement n "+str(time_buffer[0])+" "+str(temp_tmp_volts_buffer[0])+"\n") 
@@ -89,8 +105,6 @@ while True:
                 print("measurement n of rv sensor in volts "+str(time_buffer[0])+" "+str(temp_rv_volts_buffer[0]))
                 print("measurement n+1 of rv sensor in volts "+str(time_buffer[1])+" "+str(temp_rv_volts_buffer[1]))
 
-                sensor_node_data.write(str(time_buffer[0])+", "+str(temp_rv_volts_buffer[0])+"\n")
-                sensor_node_data.write(str(time_buffer[1])+", "+str(temp_rv_volts_buffer[1])+"\n")
 
                 sensor_node_log.write("Fluctuation of rv sensor in volts OK: "+ str(abs(100/float(temp_rv_volts_buffer[0])*float(temp_rv_volts_buffer[1])-100))+"%\n")
                 sensor_node_log.write("measurement n of rv sensor in volts "+str(time_buffer[0])+" "+str(temp_rv_volts_buffer[0])+"\n")
@@ -106,11 +120,12 @@ while True:
 #	    windsensor_data.write(human_time+" ")
 #	    windsensor_data.write(data);
 
+	    sensor_node_data.close()
+	    sensor_node_log.close()
 	except IOError:
 	    print("Error")
 
 arduino.close() 
-windsensor_data.close()
 
 	
 
