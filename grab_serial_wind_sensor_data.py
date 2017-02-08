@@ -85,33 +85,46 @@ while True:
 		
 #	    print("Data smoothing with data_corr: "+str(data_corr)+" and tmp_volts_buffer: "+tmp_volts_buffer[0]+" "+tmp_volts_buffer[1]+" -->"+ str(data_smoothing(tmp_volts_buffer, data_corr)))	
 
-	    temp_tmp_volts_buffer = tmp_volts_buffer		
-	    temp_rv_volts_buffer = rv_volts_buffer
+#	    temp_tmp_volts_buffer = tmp_volts_buffer		
+#	    temp_rv_volts_buffer = rv_volts_buffer
 
-	    if data_smoothing(temp_tmp_volts_buffer, data_corr) == 1 and data_smoothing(temp_rv_volts_buffer, data_corr) == 1:
-		print("Fluctuation of tmp thermistor OK: "+ str(abs(100/float(temp_tmp_volts_buffer[0])*float(temp_tmp_volts_buffer[1])-100))+"%")
-		print("tmp thermistor value in volts of measurement n "+str(time_buffer[0])+" "+str(temp_tmp_volts_buffer[0]))
-		print("tmp thermistor value in volts of measurement n+1 "+str(time_buffer[1])+" "+str(temp_tmp_volts_buffer[1]))
-	 
-		sensor_node_data.write(str(time_buffer[0])+", "+str(temp_tmp_volts_buffer[0])+", "+str(temp_rv_volts_buffer[0])+"\n")
-		sensor_node_data.write(str(time_buffer[1])+", "+str(temp_tmp_volts_buffer[1])+", "+str(temp_rv_volts_buffer[1])+"\n")
+#	    if data_smoothing(temp_tmp_volts_buffer, data_corr) == 1 and data_smoothing(temp_rv_volts_buffer, data_corr) == 1:
+#		print("Fluctuation of tmp thermistor OK: "+ str(abs(100/float(temp_tmp_volts_buffer[0])*float(temp_tmp_volts_buffer[1])-100))+"%")
+#		print("tmp thermistor value in volts of measurement n "+str(time_buffer[0])+" "+str(temp_tmp_volts_buffer[0]))
+#		print("tmp thermistor value in volts of measurement n+1 "+str(time_buffer[1])+" "+str(temp_tmp_volts_buffer[1]))
+#	 
+#		sensor_node_data.write(str(time_buffer[0])+", "+str(temp_tmp_volts_buffer[0])+", "+str(temp_rv_volts_buffer[0])+"\n")
+#		sensor_node_data.write(str(time_buffer[1])+", "+str(temp_tmp_volts_buffer[1])+", "+str(temp_rv_volts_buffer[1])+"\n")
 	
-		sensor_node_log.write("Fluctuation of tmp thermistor OK: "+ str(abs(100/float(temp_tmp_volts_buffer[0])*float(temp_tmp_volts_buffer[1])-100))+"%\n") 
-		sensor_node_log.write("tmp thermistor value in volts of measurement n "+str(time_buffer[0])+" "+str(temp_tmp_volts_buffer[0])+"\n") 
-		sensor_node_log.write("tmp thermistor value in volts of measurement n+1 "+str(time_buffer[1])+" "+str(temp_tmp_volts_buffer[1])+"\n")
+#		sensor_node_log.write("Fluctuation of tmp thermistor OK: "+ str(abs(100/float(temp_tmp_volts_buffer[0])*float(temp_tmp_volts_buffer[1])-100))+"%\n") 
+#		sensor_node_log.write("tmp thermistor value in volts of measurement n "+str(time_buffer[0])+" "+str(temp_tmp_volts_buffer[0])+"\n") 
+#		sensor_node_log.write("tmp thermistor value in volts of measurement n+1 "+str(time_buffer[1])+" "+str(temp_tmp_volts_buffer[1])+"\n")
 
 
-		print("Fluctuation of rv sensor in volts OK: "+ str(abs(100/float(temp_rv_volts_buffer[0])*float(temp_rv_volts_buffer[1])-100))+"%")
-                print("measurement n of rv sensor in volts "+str(time_buffer[0])+" "+str(temp_rv_volts_buffer[0]))
-                print("measurement n+1 of rv sensor in volts "+str(time_buffer[1])+" "+str(temp_rv_volts_buffer[1]))
+#		print("Fluctuation of rv sensor in volts OK: "+ str(abs(100/float(temp_rv_volts_buffer[0])*float(temp_rv_volts_buffer[1])-100))+"%")
+#               print("measurement n of rv sensor in volts "+str(time_buffer[0])+" "+str(temp_rv_volts_buffer[0]))
+#               print("measurement n+1 of rv sensor in volts "+str(time_buffer[1])+" "+str(temp_rv_volts_buffer[1]))
 
 
-                sensor_node_log.write("Fluctuation of rv sensor in volts OK: "+ str(abs(100/float(temp_rv_volts_buffer[0])*float(temp_rv_volts_buffer[1])-100))+"%\n")
-                sensor_node_log.write("measurement n of rv sensor in volts "+str(time_buffer[0])+" "+str(temp_rv_volts_buffer[0])+"\n")
-                sensor_node_log.write("measurement n+1 of rv sensor in volts "+str(time_buffer[1])+" "+str(temp_rv_volts_buffer[1])+"\n")
+#               sensor_node_log.write("Fluctuation of rv sensor in volts OK: "+ str(abs(100/float(temp_rv_volts_buffer[0])*float(temp_rv_volts_buffer[1])-100))+"%\n")
+#               sensor_node_log.write("measurement n of rv sensor in volts "+str(time_buffer[0])+" "+str(temp_rv_volts_buffer[0])+"\n")
+#               sensor_node_log.write("measurement n+1 of rv sensor in volts "+str(time_buffer[1])+" "+str(temp_rv_volts_buffer[1])+"\n")
+
+	    temp_windSpeed_MPH_buffer = windSpeed_MPH_buffer
+	    if data_smoothing(temp_windSpeed_MPH_buffer, data_corr) == 1:
+		print("Fluctuation of windsensor OK: "+ str(abs(100/float(temp_windSpeed_MPH_buffer[0])*float(temp_windSpeed_MPH_buffer[1])-100))+"%")
+                print("Windspeed in mph, measurement n "+str(time_buffer[0])+" "+str(temp_windSpeed_MPH_buffer[0]))
+                print("Windspeed in mph, measurement n+1 "+str(time_buffer[1])+" "+str(temp_windSpeed_MPH_buffer[1]))
+
+                sensor_node_data.write(str(time_buffer[0])+", "+str(temp_windSpeed_MPH_buffer[0]))
+                sensor_node_data.write(str(time_buffer[1])+", "+str(temp_windSpeed_MPH_buffer[1]))
+
+                sensor_node_log.write("Fluctuation of windsensor OK: "+ str(abs(100/float(temp_windSpeed_MPH_buffer[0])*float(temp_windSpeed_MPH_buffer[1])-100))+"%\n")
+                sensor_node_log.write("Windspeed in mph, measurement n "+str(time_buffer[0])+" "+str(temp_windSpeed_MPH_buffer[0])+"\n")
+                sensor_node_log.write("Windspeed in mph, measurement n+1 "+str(time_buffer[1])+" "+str(temp_windSpeed_MPH_buffer[1])+"\n")	
  
 	    else:
-		 print("Fluctuation of tmp thermistor NOT OK: "+ str(abs(100/float(tmp_volts_buffer[0])*float(tmp_volts_buffer[1])-100))+"%")	 		
+		 print("Fluctuation of windsensor NOT OK: "+ str(abs(100/float(temp_windSpeed_MPH_buffer[0])*float(temp_windSpeed_MPH_buffer[1])-100))+"%")	 		
 
 
 	    human_time = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
