@@ -28,6 +28,7 @@ float RV_Wind_ADunits;    //RV output from wind sensor
 float RV_Wind_Volts;
 unsigned long lastMillis;
 int TempCtimes100;
+int Temp_Celsius;
 float zeroWind_ADunits;
 float zeroWind_volts;
 float WindSpeed_MPH;
@@ -53,7 +54,7 @@ void loop() {
     // these are all derived from regressions from raw data as such they depend on a lot of experimental factors
     // such as accuracy of temp sensors, and voltage at the actual wind sensor, (wire losses) which were unaccouted for.
     TempCtimes100 = (0.005 *((float)TMP_Therm_ADunits * (float)TMP_Therm_ADunits)) - (16.862 * (float)TMP_Therm_ADunits) + 9075.4;  
-
+    Temp_Celsius = TempCtimes100/100+3;
     zeroWind_ADunits = -0.0006*((float)TMP_Therm_ADunits * (float)TMP_Therm_ADunits) + 1.0727 * (float)TMP_Therm_ADunits + 47.172;  //  13.0C  553  482.39
 
     zeroWind_volts = (zeroWind_ADunits * 0.0048828125) - zeroWindAdjustment;  
@@ -83,7 +84,7 @@ void loop() {
 
    Serial.print(TMP_Therm_Volts);
    Serial.print(",");
-   Serial.print(TempCtimes100);
+   Serial.print(Temp_Celsius);
    Serial.print(",");
    Serial.print((float)RV_Wind_Volts);
    Serial.print(",");

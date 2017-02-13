@@ -43,7 +43,8 @@ pressure_calc = pressure / 100.0
 # enter 102350 since we include two decimal places in the integer value
 altitude = bmp.readAltitude(101560)
 
-print("Temperature: %.2f C" % temp)
+#print("Temperature: %.2f C" % temp)
+print("Temp: " + str(temp))
 print("Pressure:    %.2f hPa" % (pressure / 100.0))
 print("Altitude:    %.2f m" % altitude)
 
