@@ -53,8 +53,8 @@ event_detected_node_2_count_wind = 0
 #Detection parameters
 detection_timeout_tmp = 1 #Timeout after detection. During this timeout no other event will be detected
 detection_timeout_wind = 1
-tmp_delta = 3.0 #Value in Celsius at which delta is evaluated as an event
-wind_delta = 5.0 #Value in MPH at which delta is evaluated as an event
+tmp_delta = 1.0 #Value in Celsius at which delta is evaluated as an event
+wind_delta =0.5 #Value in MPH at which delta is evaluated as an event
 data_set_count = 2 #Number of data sets for event detection
 
 #Node 1
@@ -117,7 +117,65 @@ for event in detect.event_gen():
 
 			#Event detected because of temperature change greater than tmp_delta or wind wind change greater than wind_delta
 			if(CALC_ABS_tmp_delta_node_1 >= tmp_delta or CALC_ABS_wind_delta_node_1 >= wind_delta):
-				#Temperature event
+
+				#Temperature and Wind event
+				if (CALC_ABS_tmp_delta_node_1 >= tmp_delta and CALC_ABS_wind_delta_node_1 >= wind_delta):
+					# Temperature event
+					if (CALC_ABS_tmp_delta_node_1 >= tmp_delta):
+						if (event_detected_node_1_count_tmp == 0):
+							print("First temperature change at node 1 detected since start of detection on: " + str(
+								data_sets_node_1[-1][0]))
+							detect_events_output_fh = open(detect_events_output_file, "a+")
+							detect_events_output_fh.write(
+								str(data_sets_node_1[-1][0]) + ",node1,tmp," + str(CALC_tmp_delta_node_1) + "\n")
+							detect_events_output_fh.close()
+							event_detected_node_1_count_tmp = event_detected_node_1_count_tmp + 1
+							event_detected_node_1_ts_tmp = data_sets_node_1[-1][0]
+						else:
+							if (time_to_epoch(data_sets_node_1[-1][0]) - time_to_epoch(
+									str(event_detected_node_1_ts_tmp)) > detection_timeout_tmp):
+								print("####### Temperature change at node 1 detected on: " + str(
+									data_sets_node_1[-1][0]) + "#######")
+								print(
+								"Last temperature change at node 1 detected on: " + str(event_detected_node_1_ts_tmp))
+								print("Time-Delta of detected temperature events at node 1: " + str(
+									time_to_epoch(data_sets_node_1[-1][0]) - time_to_epoch(
+										str(event_detected_node_1_ts_tmp))))
+								detect_events_output_fh = open(detect_events_output_file, "a+")
+								detect_events_output_fh.write(
+									str(data_sets_node_1[-1][0]) + ",node1,tmp," + str(CALC_tmp_delta_node_1) + "\n")
+								detect_events_output_fh.close()
+								event_detected_node_1_ts_tmp = data_sets_node_1[-1][0]
+
+					# Wind event
+					if (CALC_ABS_wind_delta_node_1 >= wind_delta):
+						if (event_detected_node_1_count_wind == 0):
+							print("First wind change at node 1 detected since start of detection on: " + str(
+								data_sets_node_1[-1][0]))
+							detect_events_output_fh = open(detect_events_output_file, "a+")
+							detect_events_output_fh.write(
+								str(data_sets_node_1[-1][0]) + ",node1,wind," + str(CALC_wind_delta_node_1) + "\n")
+							detect_events_output_fh.close()
+							event_detected_node_1_count_wind = event_detected_node_1_count_wind + 1
+							event_detected_node_1_ts_wind = data_sets_node_1[-1][0]
+						else:
+							if (time_to_epoch(data_sets_node_1[-1][0]) - time_to_epoch(
+									str(event_detected_node_1_ts_wind)) > detection_timeout_wind):
+								print("####### Wind change at node 1 detected on: " + str(
+									data_sets_node_1[-1][0]) + "#######")
+								print("Last wind change at node 1 detected on: " + str(event_detected_node_1_ts_wind))
+								print("Time-Delta of detected wind events at node 1: " + str(
+									time_to_epoch(data_sets_node_1[-1][0]) - time_to_epoch(
+										str(event_detected_node_1_ts_wind))))
+								detect_events_output_fh = open(detect_events_output_file, "a+")
+								detect_events_output_fh.write(
+									str(data_sets_node_1[-1][0]) + ",node1,wind," + str(CALC_wind_delta_node_1) + "\n")
+								detect_events_output_fh.close()
+								event_detected_node_1_ts_wind = data_sets_node_1[-1][0]
+
+
+
+				#Temperature event only
 				if(CALC_ABS_tmp_delta_node_1 >= tmp_delta):
 					if(event_detected_node_1_count_tmp == 0):
 						print("First temperature change at node 1 detected since start of detection on: "+str(data_sets_node_1[-1][0]))
@@ -136,7 +194,7 @@ for event in detect.event_gen():
 								detect_events_output_fh.close()
 								event_detected_node_1_ts_tmp = data_sets_node_1[-1][0]
 
-				#Wind event
+				#Wind event only
 				if(CALC_ABS_wind_delta_node_1 >= wind_delta):
 						if(event_detected_node_1_count_wind == 0):
 							print("First wind change at node 1 detected since start of detection on: "+str(data_sets_node_1[-1][0]))
@@ -176,7 +234,64 @@ for event in detect.event_gen():
 
 			#Event detected because of temperature change greater than tmp_delta or wind wind change greater than wind_delta
 			if(CALC_ABS_tmp_delta_node_2 >= tmp_delta or CALC_ABS_wind_delta_node_2 >= wind_delta):
-				#Temperature event
+
+				#Temperature and wind event
+				if (CALC_ABS_tmp_delta_node_2 >= tmp_delta and CALC_ABS_wind_delta_node_2 >= wind_delta):
+					# Temperature event
+					if (CALC_ABS_tmp_delta_node_2 >= tmp_delta):
+						if (event_detected_node_2_count_tmp == 0):
+							print("First temperature change at node 2 detected since start of detection on: " + str(
+								data_sets_node_2[-1][0]))
+							detect_events_output_fh = open(detect_events_output_file, "a+")
+							detect_events_output_fh.write(
+								str(data_sets_node_2[-1][0]) + ",node2,tmp," + str(CALC_tmp_delta_node_2) + "\n")
+							detect_events_output_fh.close()
+							event_detected_node_2_count_tmp = event_detected_node_2_count_tmp + 1
+							event_detected_node_2_ts_tmp = data_sets_node_2[-1][0]
+						else:
+							if (time_to_epoch(data_sets_node_2[-1][0]) - time_to_epoch(
+									str(event_detected_node_2_ts_tmp)) > detection_timeout_tmp):
+								print("####### Temperature change at node 2 detected on: " + str(
+									data_sets_node_2[-1][0]) + "#######")
+								print(
+								"Last temperature change at node 2 detected on: " + str(event_detected_node_2_ts_tmp))
+								print("Time-Delta of detected temperature events at node 2: " + str(
+									time_to_epoch(data_sets_node_2[-1][0]) - time_to_epoch(
+										str(event_detected_node_2_ts_tmp))))
+								detect_events_output_fh = open(detect_events_output_file, "a+")
+								detect_events_output_fh.write(
+									str(data_sets_node_2[-1][0]) + ",node2,tmp," + str(CALC_tmp_delta_node_2) + "\n")
+								detect_events_output_fh.close()
+								event_detected_node_2_ts_tmp = data_sets_node_2[-1][0]
+
+					# Wind event
+					if (CALC_ABS_wind_delta_node_2 >= wind_delta):
+						if (event_detected_node_2_count_wind == 0):
+							print("First wind change at node 2 detected since start of detection on: " + str(
+								data_sets_node_2[-1][0]))
+							detect_events_output_fh = open(detect_events_output_file, "a+")
+							detect_events_output_fh.write(
+								str(data_sets_node_2[-1][0]) + ",node2,wind," + str(CALC_wind_delta_node_2) + "\n")
+							detect_events_output_fh.close()
+							event_detected_node_2_count_wind = event_detected_node_2_count_wind + 1
+							event_detected_node_2_ts_wind = data_sets_node_2[-1][0]
+						else:
+							if (time_to_epoch(data_sets_node_2[-1][0]) - time_to_epoch(
+									str(event_detected_node_2_ts_wind)) > detection_timeout_wind):
+								print("####### Wind change at node 2 detected on: " + str(
+									data_sets_node_2[-1][0]) + "#######")
+								print("Last wind change at node 2 detected on: " + str(event_detected_node_2_ts_wind))
+								print("Time-Delta of detected wind events at node 2: " + str(
+									time_to_epoch(data_sets_node_2[-1][0]) - time_to_epoch(
+										str(event_detected_node_2_ts_wind))))
+								detect_events_output_fh = open(detect_events_output_file, "a+")
+								detect_events_output_fh.write(
+									str(data_sets_node_2[-1][0]) + ",node2,wind," + str(CALC_wind_delta_node_2) + "\n")
+								detect_events_output_fh.close()
+								event_detected_node_2_ts_wind = data_sets_node_2[-1][0]
+
+
+				#Temperature event only
 				if(CALC_ABS_tmp_delta_node_2 >= tmp_delta):
 					if(event_detected_node_2_count_tmp == 0):
 						print("First temperature change at node 2 detected since start of detection on: "+str(data_sets_node_2[-1][0]))
@@ -195,7 +310,7 @@ for event in detect.event_gen():
 								detect_events_output_fh.close()
 								event_detected_node_2_ts_tmp = data_sets_node_2[-1][0]
 
-				#Wind event
+				#Wind event only
 				if(CALC_ABS_wind_delta_node_2 >= wind_delta):
 					if(event_detected_node_2_count_wind == 0):
 						print("First wind change at node 2 detected since start of detection on: "+str(data_sets_node_2[-1][0]))
